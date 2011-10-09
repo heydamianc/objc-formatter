@@ -1,4 +1,4 @@
 #! /usr/bin/env bash
 set -e
 
-echo "Hellow, world"
+src/template.awk src/objc-formatter.awk.template

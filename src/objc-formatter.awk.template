@@ -1,0 +1,25 @@
+#! /usr/bin/env awk -f
+
+BEGIN {
+
+}
+{
+    line = $0
+    
+    stripTrailingWhitespace(line)
+
+    if (line ~ /@property/) {
+        @include property.awk body
+    } 
+    else if (line ~ /@synthesize/) {
+        @include synthesize.awk body
+    }
+    else {
+        print
+    }
+}
+END {
+
+}
+
+@include util.awk functions
