@@ -30,25 +30,30 @@
 # 
 # 2011-10-08
 # 
-#
+# Usage:
+#   $ ./template.awk -v outputDir=./some/dir .../path/to/some/file.template
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 BEGIN {
+    if (!outputDir) {
+        outputDir = "./"
+    }
+
     split(ARGV[1], components, "\/")
     
-    scriptName = components[length(components)]
+    outputFile = components[length(components)]
     
-    if (!index(scriptName, ".template")) {
+    if (!index(outputFile, ".template")) {
         exitWithErrorMessage("Invalid template file - expected filename " \
             "with .template suffix")
     }
     
     # strip .template suffix
-    sub(/\.template/, "", scriptName)
+    sub(/\.template/, "", outputFile)
     
-    tempScriptPath = "/tmp/" scriptName
-    scriptPath = "./" scriptName
+    tempoutputFilePath = "/tmp/" outputFile
+    outputFilePath = outputDir "/" outputFile
     
     includeDir = ""
     
@@ -84,14 +89,14 @@ BEGIN {
         includeFragment(whitespace, fragmentFile, fragmentLabel)
     }
     else {
-        print > tempScriptPath
+        print > tempoutputFilePath
     }
 }
 END {
-    while ((getline line < tempScriptPath) > 0) {
-        print line > scriptPath
+    while ((getline line < tempoutputFilePath) > 0) {
+        print line > outputFilePath
     }
-    close(tempScriptPath)
+    close(tempoutputFilePath)
 }
 
 function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
@@ -102,7 +107,7 @@ function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
                     close(fragmentFile)
                     return
                 }
-                print line > tempScriptPath
+                print line > tempoutputFilePath
             }
         }
     }

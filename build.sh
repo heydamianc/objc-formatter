@@ -6,4 +6,4 @@ then
     rm ./objc-formatter.awk
 fi
 
-src/template.awk src/objc-formatter.awk.template
+src/template.awk -v outputDir=./build src/objc-formatter.awk.template
