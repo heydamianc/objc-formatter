@@ -89,6 +89,7 @@ END {
     while ((getline line < tempScriptPath) > 0) {
         print line > scriptPath
     }
+    close(tempScriptPath)
 }
 
 function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
@@ -96,6 +97,7 @@ function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
         if (line ~ "@start-fragment " fragmentLabel) {
             while ((getline line < fragmentFile) > 0) {
                 if (line ~ "@end-fragment " fragmentLabel) {
+                    close(fragmentFile)
                     return
                 }
                 print line > tempScriptPath
