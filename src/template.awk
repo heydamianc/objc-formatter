@@ -40,7 +40,8 @@ BEGIN {
     scriptName = components[length(components)]
     
     if (!index(scriptName, ".template")) {
-        exitWithErrorMessage("Invalid template file - expected filename with .template suffix")
+        exitWithErrorMessage("Invalid template file - expected filename " \
+            "with .template suffix")
     }
     
     # strip .template suffix
@@ -64,7 +65,8 @@ BEGIN {
         
         if (length(arguments) < 2) {
             errorMessage = "Unable to parse @include statement on line " \
-                NR ".  Expected \"#include-fragment file fragment\", got \"" line "\"."
+                NR ".  Expected \"#include-fragment file fragment\", " \
+                "got \"" line "\"."
                 
             exitWithErrorMessage(errorMessage)
         }
@@ -105,7 +107,8 @@ function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
         }
     }
     
-    exitWithErrorMessage("Unable to find fragment with label \"" fragmentLabel "\" in " fragmentFile)
+    exitWithErrorMessage("Unable to find fragment with label \"" \
+        fragmentLabel "\" in " fragmentFile)
 }
 
 function exitWithErrorMessage(errorMessage) {        
