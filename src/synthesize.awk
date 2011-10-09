@@ -4,9 +4,9 @@
     line = $0
     
     if (line ~ /@property/) {
-        # @fragment body
+        #start-fragment body
         readSynthesizers(line, synthesizers)
         reformatSynthesizers(synthesizers)
-        # @end body
+        #end-fragment body
     }
 }

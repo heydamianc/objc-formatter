@@ -22,7 +22,7 @@ BEGIN {
     }
 }
 {
-    if ($0 ~ /@include/) {
+    if ($0 ~ /\#include-fragment/) {
         if (NF != 3) {
             errorMessage = "Unable to parse @include statement on line " \
                 NR ".  Expected \"@include file fragment\", got \"" $0 "\"."
@@ -32,7 +32,7 @@ BEGIN {
         
         line = $0
 
-        location = index(line, "@")
+        location = index(line, "#")
         whitespace = ""
 
         for (i = 0; i < location - 1; i++) {
@@ -56,9 +56,9 @@ END {
 
 function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
     while ((getline line < fragmentFile) > 0) {
-        if (line ~ "# @fragment " fragmentLabel) {
+        if (line ~ "#start-fragment " fragmentLabel) {
             while ((getline line < fragmentFile) > 0) {
-                if (line ~ "# @end " fragmentLabel) {
+                if (line ~ "#end-fragment " fragmentLabel) {
                     return
                 }
                 print line > tempScriptPath

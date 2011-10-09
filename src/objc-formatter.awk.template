@@ -9,10 +9,10 @@ BEGIN {
     stripTrailingWhitespace(line)
 
     if (line ~ /@property/) {
-        @include property.awk body
+        #include-fragment property.awk body
     } 
     else if (line ~ /@synthesize/) {
-        @include synthesize.awk body
+        #include-fragment synthesize.awk body
     }
     else {
         print
@@ -22,4 +22,4 @@ END {
 
 }
 
-@include util.awk functions
+#include-fragment util.awk functions
