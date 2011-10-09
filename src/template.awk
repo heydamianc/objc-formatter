@@ -25,7 +25,7 @@ BEGIN {
     if ($0 ~ /\#include-fragment/) {
         if (NF != 3) {
             errorMessage = "Unable to parse @include statement on line " \
-                NR ".  Expected \"@include file fragment\", got \"" $0 "\"."
+                NR ".  Expected \"#include-fragment file fragment\", got \"" $0 "\"."
                 
             exitWithErrorMessage(errorMessage)
         }
@@ -50,7 +50,7 @@ BEGIN {
 }
 END {
     while ((getline line < tempScriptPath) > 0) {
-        print line >> scriptPath
+        print line > scriptPath
     }
 }
 

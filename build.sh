@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 set -e
 
-rm objc-formatter.awk &> /dev/null
+if [ -f ./objc-formatter.awk ]
+then
+    rm ./objc-formatter.awk
+fi
+
 src/template.awk src/objc-formatter.awk.template
