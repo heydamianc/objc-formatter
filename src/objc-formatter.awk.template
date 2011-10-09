@@ -50,7 +50,7 @@ BEGIN {
     stripTrailingWhitespace(line)
 
     if (line ~ /@property/) {
-        # @include-fragment property.awk body
+        
     } 
     else if (line ~ /@synthesize/) {
         # @include-fragment synthesize.awk body

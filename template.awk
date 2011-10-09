@@ -31,34 +31,39 @@
 # 2011-10-08
 # 
 # Usage:
-#   $ ./template.awk -v outputDir=./some/dir .../path/to/some/file.template
+#   $ ./template.awk -v output=.../path/to/output/file \
+#                    -v include=.../path/to/include/dir \
+#                    .../path/to/template/file
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 BEGIN {
-    if (!outputDir) {
-        outputDir = "./"
+    if (output) {
+        outputFilePath = output
     }
-
+    else {
+        outputFilePath = "./" ARGV[1] ".out"
+    }
+    
+    if (include) {
+        includeDir = include "/"
+    }
+    else {
+        includeDir = ""
+        
+        for (i = 1; i < length(components); i++) {
+            includeDir = includeDir components[i] "/"
+        }
+    }
+    
     split(ARGV[1], components, "\/")
+    tempFileName = components[length(components)]
+    tempOutputFilePath = "/tmp/" tempFileName
     
-    outputFile = components[length(components)]
-    
-    if (!index(outputFile, ".template")) {
-        exitWithErrorMessage("Invalid template file - expected filename " \
-            "with .template suffix")
-    }
-    
-    # strip .template suffix
-    sub(/\.template/, "", outputFile)
-    
-    tempoutputFilePath = "/tmp/" outputFile
-    outputFilePath = outputDir "/" outputFile
-    
-    includeDir = ""
-    
-    for (i = 1; i < length(components); i++) {
-        includeDir = includeDir components[i] "/"
+    if (v == 1) {
+        print "outputFilePath:     " outputFilePath
+        print "includeDir:         " includeDir
+        print "tempOutputFilePath: " tempOutputFilePath
     }
 }
 {
@@ -86,17 +91,21 @@ BEGIN {
         fragmentFile = includeDir arguments[1]
         fragmentLabel = arguments[2]
         
-        includeFragment(whitespace, fragmentFile, fragmentLabel)
+        if (fileExists(fragmentFile)) {
+            includeFragment(whitespace, fragmentFile, fragmentLabel)
+        } else {
+            exitWithErrorMessage("Unable to find " fragmentFile " on line " NR)
+        }
     }
     else {
-        print > tempoutputFilePath
+        print > tempOutputFilePath
     }
 }
 END {
-    while ((getline line < tempoutputFilePath) > 0) {
+    while ((getline line < tempOutputFilePath) > 0) {
         print line > outputFilePath
     }
-    close(tempoutputFilePath)
+    close(tempOutputFilePath)
 }
 
 function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
@@ -107,7 +116,7 @@ function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
                     close(fragmentFile)
                     return
                 }
-                print line > tempoutputFilePath
+                print line > tempOutputFilePath
             }
         }
     }
@@ -119,4 +128,20 @@ function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
 function exitWithErrorMessage(errorMessage) {        
     system("echo 'Error: " errorMessage "' 1>&2")
     exit 1
+}
+
+# 
+# The shell's version of truth differs from awk's, so make the test conveniently switch them
+#
+function fileExists(file) {
+    exists = system("test -f " file)
+    
+    if (exists == 0) {
+        exists = 1
+    }
+    else {
+        exists = 0
+    }
+    
+    return exists
 }
