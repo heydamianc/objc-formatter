@@ -56,15 +56,18 @@ BEGIN {
     }
 }
 {
-    if ($0 ~ /\#include-fragment/) {
-        if (NF != 3) {
+    if ($0 ~ /\@include-fragment/) {
+        line = $0
+    
+        sub(/.*@include-fragment/, "", line)
+        split(line, arguments)
+        
+        if (length(arguments) < 2) {
             errorMessage = "Unable to parse @include statement on line " \
-                NR ".  Expected \"#include-fragment file fragment\", got \"" $0 "\"."
+                NR ".  Expected \"#include-fragment file fragment\", got \"" line "\"."
                 
             exitWithErrorMessage(errorMessage)
         }
-        
-        line = $0
 
         location = index(line, "#")
         whitespace = ""
@@ -73,8 +76,8 @@ BEGIN {
             whitespace = whitespace " "
         }
         
-        fragmentFile = includeDir $2
-        fragmentLabel = $3
+        fragmentFile = includeDir arguments[1]
+        fragmentLabel = arguments[2]
         
         includeFragment(whitespace, fragmentFile, fragmentLabel)
     }
@@ -90,9 +93,9 @@ END {
 
 function includeFragment(linePrefix, fragmentFile, fragmentLabel) {
     while ((getline line < fragmentFile) > 0) {
-        if (line ~ "#start-fragment " fragmentLabel) {
+        if (line ~ "@start-fragment " fragmentLabel) {
             while ((getline line < fragmentFile) > 0) {
-                if (line ~ "#end-fragment " fragmentLabel) {
+                if (line ~ "@end-fragment " fragmentLabel) {
                     return
                 }
                 print line > tempScriptPath

@@ -4,13 +4,25 @@
     line = $0
     
     if (line ~ /@property/) {
-        # @fragment body
-        readProperties(line, properties)
-        reformatProperties(properties)
-        # @end body
+        
     }
 }
 
-#start-fragment functions
+# @start-fragment functions
 
-#end-fragment functions
+function trim(s) {
+  sub(/^[ \t]*/, "", s)
+  sub(/[ \t]*$/, "", s)
+  return s
+}
+
+function condenseWhitespace(s) {
+  gsub(/[ \t]+/, " ", s)
+  return s
+}
+
+function max(m, n) {
+  return m > n ? m : n
+}
+
+# @end-fragment functions

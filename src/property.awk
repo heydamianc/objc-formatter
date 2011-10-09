@@ -4,9 +4,9 @@
     line = $0
     
     if (line ~ /@property/) {
-        #start-fragment body
+        # @start-fragment body
         readProperties(line, properties)
         reformatProperties(properties)
-        #end-fragment body
+        # @end-fragment body
     }
 }
