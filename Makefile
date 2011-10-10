@@ -38,8 +38,11 @@ objc-formatter.awk: synthesize.awk
 synthesize.awk: util.awk
 	./template.awk -v output=build/synthesize.awk -v include=build src/synthesize.awk.template
 
-util.awk:
+util.awk: create-build-dir
 	./template.awk -v output=build/util.awk src/util.awk.template
 
+create-build-dir:
+	if [ ! -d build ]; then mkdir build; fi
+
 clean:
-	rm -rf build/*.awk
+	rm -rf build
