@@ -15,10 +15,22 @@ do
     input="${testDir}/${testCase}/input"
     expected="${testDir}/${testCase}/expected"
     
-    testCmd="${sut} -v config=${config} ${input} | diff --side-by-side ${expected} -"
+    testCmd="${sut} -v config=${config} ${input} | diff -B ${expected} -"
+    result=$(eval "${testCmd}")
     
-    echo "${testCmd}"
-    output=$(eval "${testCmd}")
-    echo "${output}"
-
+    if [[ ${result} == "" ]]
+    then
+        echo "  ✓ ${testCase}"
+    else
+        differences=$(echo ${result} | wc -l)
+        
+        echo "  ✗ ${testCase} (see test/reports/${testCase}.report)"
+        
+        if [ ! -d  "test/reports" ]
+        then
+            mkdir "test/reports"
+        fi
+        
+        echo "${result}" > "test/reports/${testCase}.report"
+    fi
 done

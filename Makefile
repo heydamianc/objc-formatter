@@ -43,6 +43,6 @@ util.awk: create-build-dir
 
 create-build-dir:
 	if [ ! -d build ]; then mkdir build; fi
-
+	
 clean:
 	rm -rf build

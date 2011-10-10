@@ -51,16 +51,12 @@ function storeSynthesizedProperty(names, aliases, i) {
 
     for (j = 1; j <= declarationCount; j++) {
         if (split(declarations[j], values, "=") < 2) {
-            sub(" ", "", values[1])
-            names[i] = values[1]
-            aliases[i] = values[1]
+            names[i] = trim(values[1])
+            aliases[i] = trim(values[1])
         }
         else {
-            sub(" ", "", values[1])
-            sub(" ", "", values[2])
-
-            names[i] = values[1]
-            aliases[i] = values[2]
+            names[i] = trim(values[1])
+            aliases[i] = trim(values[2])
         }
 
         i++
