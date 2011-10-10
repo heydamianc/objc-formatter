@@ -13,4 +13,4 @@ SYNTHESIZERS_SHOULD_BE_FORMATTED = 1
 #   2 - line up lhs and rhs of the assignment
 #       @synthesize property        = _property;
 #       @synthesize anotherProperty = _anotherProperty;
-SYNTHESIZERS_SHOULD_HAVE_N_COLUMNS = 2
+SYNTHESIZERS_SHOULD_HAVE_N_COLUMNS = 1

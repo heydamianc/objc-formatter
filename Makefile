@@ -33,16 +33,16 @@ generate: objc-formatter.awk
 	chmod +x build/*.awk
 
 objc-formatter.awk: synthesize.awk
-	./template.awk -v output=build/objc-formatter.awk -v include=build src/objc-formatter.awk.template
+	./template.awk -v output=build/objc-formatter.awk -v include=build src/objc-formatter.template.awk
 
 synthesize.awk: util.awk
-	./template.awk -v output=build/synthesize.awk -v include=build src/synthesize.awk.template
+	./template.awk -v output=build/synthesize.awk -v include=build src/synthesize.template.awk
 
 util.awk: create-build-dir
-	./template.awk -v output=build/util.awk src/util.awk.template
+	./template.awk -v output=build/util.awk src/util.template.awk
 
 create-build-dir:
 	if [ ! -d build ]; then mkdir build; fi
 	
 clean:
-	rm -rf build && rm -rf test/report
+	rm -rf build && rm -rf test/failures

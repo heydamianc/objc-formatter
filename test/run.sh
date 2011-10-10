@@ -14,23 +14,20 @@ do
     config="${testDir}/${testCase}/config"
     input="${testDir}/${testCase}/input"
     expected="${testDir}/${testCase}/expected"
-    
-    testCmd="${sut} -v config=${config} ${input} | diff -B ${expected} -"
+
+    testCmd="${sut} -v configFile=${config} ${input} | diff -B ${expected} -"
     result=$(eval "${testCmd}")
-    
+
     if [[ ${result} == "" ]]
     then
         echo "  ✓ ${testCase}"
     else
         differences=$(echo ${result} | wc -l)
+
+        failureDir="test/failures/$(basename ${testDir})"
+        mkdir -p "${failureDir}"
         
-        echo "  ✗ ${testCase} (see test/reports/${testCase}.report)"
-        
-        if [ ! -d  "test/reports" ]
-        then
-            mkdir "test/reports"
-        fi
-        
-        echo "${result}" > "test/reports/${testCase}.report"
+        echo "  ✗ ${testCase} (see ${failureDir}/${testCase}.report)"
+        echo "${result}" > "${failureDir}/${testCase}.report"
     fi
 done
