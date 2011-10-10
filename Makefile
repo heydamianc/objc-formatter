@@ -45,4 +45,4 @@ create-build-dir:
 	if [ ! -d build ]; then mkdir build; fi
 	
 clean:
-	rm -rf build
+	rm -rf build && rm -rf test/report

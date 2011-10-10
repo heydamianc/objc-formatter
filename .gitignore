@@ -1,2 +1,3 @@
 objc-formatter.awk
 build/*
+tests/reports
