@@ -7,14 +7,20 @@ BEGIN {
     # @end-fragment default-config
     
     # @include-fragment util.awk config
+    
+    if (ARGC <= 1) {
+        print "Usage: ./synthesize.awk sourceFile"
+        exit 1
+    }
+    
+    sourceFile = ARGV[1]
+    
+    while (getline < sourceFile) {
+        print
+    }
 }
 {
-    if ($0 ~ /@synthesize/) {
-        # @start-fragment body
-		readSynthesizeBlock(properties, aliases)
-		formatSynthesizeBlock(properties, aliases)
-        # @end-fragment body
-    }
+    # do nothing
 }
 
 # @start-fragment functions
