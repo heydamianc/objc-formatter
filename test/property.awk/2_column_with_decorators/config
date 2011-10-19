@@ -1,6 +1,13 @@
 PROPERTIES_SHOULD_BE_FORMATTED = 1
 
 # Possible Values: 0, 1
+#   0: Does not group IBOutlets at the top of all property declarations
+#
+#   1: Groups all IBOutlets at the top of all property declarations
+# 
+PROPERTIES_SHOULD_HAVE_IBOUTLETS_GROUPED = 0
+
+# Possible Values: 0, 1
 #
 #	0: @property(nonatomic, retain) UIViewController *viewController;
 #

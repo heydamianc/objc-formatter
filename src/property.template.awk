@@ -5,6 +5,13 @@ BEGIN {
 	config["PROPERTIES_SHOULD_BE_FORMATTED"] = 1
 	
 	# Possible Values: 0, 1
+	#   0: Does not group IBOutlets at the top of all property declarations
+	#
+	#   1: Groups all IBOutlets at the top of all property declarations
+	# 
+	config["PROPERTIES_SHOULD_HAVE_IBOUTLETS_GROUPED"] = 1
+	
+	# Possible Values: 0, 1
 	#
 	#	0: @property(nonatomic, retain) UIViewController *viewController;
 	#
@@ -32,11 +39,11 @@ BEGIN {
 	#	   @property(nonatomic, retain)			   IBOutlet UIWindow	*window;
 	#	   @property(nonatomic, retain, readwrite)			UITableView *tableView;
 	#
-	config["PROPERTIES_SHOULD_HAVE_N_COLUMNS"] = 1
+	config["PROPERTIES_SHOULD_HAVE_N_COLUMNS"] = 4
 	# @end-fragment default-config
 	
 	# @include-fragment util.awk config
-
+	
 	# @start-fragment body
 	while (getline line) {
 		parseLine(line)
@@ -79,15 +86,15 @@ function extractProperties(line, propertyDeclarations, decoratorLists, types, na
 		
 		propertyDeclaration = substr(line, 0, rightParensLoc)
 		sub(/@property[ \t]*\(/, "@property(", propertyDeclaration)
-
+		
 		i = length(propertyDeclarations) + 1
-
+		
 		propertyDeclaration = trim(propertyDeclaration)
 		maxLengths["propertyDeclaration"] = max(maxLengths["propertyDeclaration"], length(propertyDeclaration))
 		propertyDeclarations[i] = propertyDeclaration
 		
 		variableDeclaration = trim(substr(line, rightParensLoc + 1, length(line)))
-
+		
 		# associate the star with the variable name's token
 		gsub(/[ \t]*\*[ \t]*/, " *", variableDeclaration)
 		
@@ -115,8 +122,58 @@ function extractProperties(line, propertyDeclarations, decoratorLists, types, na
 	}
 }
 
-function formatProperties(propertyDeclarations, decoratorLists, types, names, maxLengths) {	
+function formatProperties(propertyDeclarations, decoratorLists, types, names, maxLengths) {
 	propertyCount = length(propertyDeclarations)
+	
+	if (config["PROPERTIES_SHOULD_HAVE_IBOUTLETS_GROUPED"] == 1) {
+		a = 1
+		b = 1
+		
+		for (i = 1; i <= propertyCount; i++) {
+			if (decoratorLists[i] ~ /IBOutlet/) {
+				propertyDeclarationsA[a] = propertyDeclarations[i]
+				decoratorListsA[a]       = decoratorLists[i]
+				typesA[a]                = types[i]
+				namesA[a]                = names[i]
+				
+				a++
+			} else {
+				propertyDeclarationsB[b] = propertyDeclarations[i]
+				decoratorListsB[b]       = decoratorLists[i]
+				typesB[b]                = types[i]
+				namesB[b]                = names[i]
+				
+				b++
+			}
+		}
+		
+		delete propertyDeclarations
+		delete decoratorLists
+		delete types
+		delete names
+		
+		j = 1
+		
+		propertiesInA = length(propertyDeclarationsA)
+		for (a = 1; a <= propertiesInA; a++) {
+			propertyDeclarations[j] = propertyDeclarationsA[a]
+			decoratorLists[j]       = decoratorListsA[a]
+			types[j]                = typesA[a]
+			names[j]                = namesA[a]
+			
+			j++
+		}
+		
+		propertiesInB = length(propertyDeclarationsB)
+		for (b = 1; b <= propertiesInB; b++) {
+			propertyDeclarations[j] = propertyDeclarationsB[b]
+			decoratorLists[j]       = decoratorListsB[b]
+			types[j]                = typesB[b]
+			names[j]                = namesB[b]
+			
+			j++
+		}
+	}
 	
 	if (config["PROPERTIES_SHOULD_HAVE_SPACE_AFTER_ANNOTATION"] == 1) {
 		for (i = 1; i <= propertyCount; i++) {
@@ -125,6 +182,7 @@ function formatProperties(propertyDeclarations, decoratorLists, types, names, ma
 		
 		maxLengths["propertyDeclaration"] = maxLengths["propertyDeclaration"] + 1
 	}
+	
 	
 	# precalculate the 2nd column's length (for the case when there are 3 columns)
 	

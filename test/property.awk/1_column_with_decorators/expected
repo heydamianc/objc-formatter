@@ -4,4 +4,4 @@
 @property(nonatomic, retain, readwrite) NSPersistentStoreCoordinator *propertyStoreCoordinator;
 @property(nonatomic, retain, readwrite) NSManagedObjectModel *geographyObjectModel;
 @property(nonatomic, retain, readwrite) NSManagedObjectContext *geographyObjectContext;
-@property(nonatomic, retain, readwrite) IBAction NSPersistentStoreCoordinator *geographyStoreCoordinator;
+@property(nonatomic, retain, readwrite) IBOutlet NSPersistentStoreCoordinator *geographyStoreCoordinator;
