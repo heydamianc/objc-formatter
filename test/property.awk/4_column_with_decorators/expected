@@ -1,0 +1,7 @@
+@property(nonatomic, retain)            __attribute__((NSObject)) IBOutlet CGRect                       someFrame;
+@property(nonatomic, retain, readwrite)                                    NSManagedObjectModel         *propertyObjectModel;
+@property(nonatomic, retain, readwrite)                                    NSManagedObjectContext       *propertyObjectContext;
+@property(nonatomic, retain, readwrite)                                    NSPersistentStoreCoordinator *propertyStoreCoordinator;
+@property(nonatomic, retain, readwrite)                                    NSManagedObjectModel         *geographyObjectModel;
+@property(nonatomic, retain, readwrite)                                    NSManagedObjectContext       *geographyObjectContext;
+@property(nonatomic, retain, readwrite) IBAction                           NSPersistentStoreCoordinator *geographyStoreCoordinator;

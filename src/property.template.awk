@@ -10,7 +10,7 @@ BEGIN {
 	#
 	#	1: @property (nonatomic, retain) UIViewController *viewController;
 	#
-	config["PROPERTIES_SHOULD_HAVE_SPACE_AFTER_ANNOTATION"] = 0
+	config["PROPERTIES_SHOULD_HAVE_SPACE_AFTER_ANNOTATION"] = 1
 	
 	# Possible Values: 1 - 4
 	#
@@ -118,6 +118,21 @@ function extractProperties(line, propertyDeclarations, decoratorLists, types, na
 function formatProperties(propertyDeclarations, decoratorLists, types, names, maxLengths) {	
 	propertyCount = length(propertyDeclarations)
 	
+	if (config["PROPERTIES_SHOULD_HAVE_SPACE_AFTER_ANNOTATION"] == 1) {
+		for (i = 1; i <= propertyCount; i++) {
+			sub(/@property\(/, "@property (", propertyDeclarations[i])
+		}
+		
+		maxLengths["propertyDeclaration"] = maxLengths["propertyDeclaration"] + 1
+	}
+	
+	# precalculate the 2nd column's length (for the case when there are 3 columns)
+	
+	col2Len = 0
+	for (i = 1; i < propertyCount; i++) {
+		col2Len = max(col2Len, length(trim(decoratorLists[i] " " types[i] " ")))
+	}
+	
 	for (i = 1; i <= propertyCount; i++) {
 		if (config["PROPERTIES_SHOULD_HAVE_N_COLUMNS"] == 1) {
 			if (length(decoratorLists[i]) > 0) {
@@ -133,6 +148,27 @@ function formatProperties(propertyDeclarations, decoratorLists, types, names, ma
 			format = "%-" maxLengths["propertyDeclaration"] "s %s;\n"
 			
 			printf(format, col1, col2)
+		} else if (config["PROPERTIES_SHOULD_HAVE_N_COLUMNS"] == 3) {
+			col1 = propertyDeclarations[i]
+			col2 = trim(decoratorLists[i] " " types[i] " ")
+			col3 = names[i]
+			
+			format = "%-" maxLengths["propertyDeclaration"] "s %-" col2Len "s %s;\n"
+			printf(format, col1, col2, col3)
+		} else if (config["PROPERTIES_SHOULD_HAVE_N_COLUMNS"] == 4) {
+			col1 = propertyDeclarations[i]
+			col2 = decoratorLists[i]
+			col3 = types[i]
+			col4 = names[i]
+			
+			if (maxLengths["decoratorList"] == 0) {
+				format = "%-" maxLengths["propertyDeclaration"] "s %-" maxLengths["type"] "s %s;\n"
+				printf(format, col1, col3, col4)
+			} else {
+				format = "%-" maxLengths["propertyDeclaration"] "s %-" maxLengths["decoratorList"] "s " \
+					"%-" maxLengths["type"] "s %s;\n"
+				printf(format, col1, col2, col3, col4)
+			}
 		}
 	}
 }
