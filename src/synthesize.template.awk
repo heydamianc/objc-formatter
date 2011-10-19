@@ -45,10 +45,15 @@ function extractSynthesizers(line, properties, aliases) {
     gsub(";", "", line)
     gsub(/[ \t]*/, "", line)
     
-    split(line, individualProperties, ",")
+    split(line, directives, ",")
+    len = length(directives)
     
-    for (i = 1; i <= length(individualProperties); i++) {
-        split(individualProperties[i], components, "=")
+    for (i = 1; i <= len; i++) {
+
+		# The components of the directive are the LHS and RHS of the alias assignment, so for
+		# @syntehsize a = _a, component[1] would be 'a' and component[2] would be 'b'
+
+        split(directives[i], components, "=")
         
         if (length(components[1]) > 0) { # avoid lines with only whitespace
             j = length(properties) + 1
@@ -64,13 +69,11 @@ function extractSynthesizers(line, properties, aliases) {
 }
 
 function formatSynthesizers(properties, aliases) {
-    maxLength = 0
+	len = length(properties)
 
-    for (i = 1; i <= length(properties); i++) {
-        maxLength = max(maxLength, length(properties[i]));
-    }
+    maxLength = maxLengthOf(properties)
     
-    for (i = 1; i <= length(properties); i++) {
+    for (i = 1; i <= len; i++) {
         format = ""
 
         if (config["SYNTHESIZERS_SHOULD_HAVE_N_COLUMNS"] == 1) {

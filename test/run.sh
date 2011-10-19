@@ -26,7 +26,7 @@ do
 
         failureDir="test/failures/$(basename ${testDir})"
         mkdir -p "${failureDir}"
-
+        
         echo "  ✗ ${testCase} (see ${failureDir}/${testCase}.report)"
         echo "${result}" > "${failureDir}/${testCase}.report"
     fi

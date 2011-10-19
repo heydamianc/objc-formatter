@@ -1,0 +1,31 @@
+PROPERTIES_SHOULD_BE_FORMATTED = 1
+
+# Possible Values: 0, 1
+#
+#	0: @property(nonatomic, retain) UIViewController *viewController;
+#
+#	1: @property (nonatomic, retain) UIViewController *viewController;
+#
+PROPERTIES_SHOULD_HAVE_SPACE_AFTER_ANNOTATION = 0
+
+# Possible Values: 1 - 4
+#
+#	1: All property declarations shift as far left as possible
+#	   @property(nonatomic, retain) IBOutlet UIWindow *window;
+#	   @property(nonatomic, retain, readwrite) UITableView *tableView;
+#
+#	2: All property annotations are left aligned, all following information is left aligned
+#	   @property(nonatomic, retain)			   IBOutlet UIWindow *window;
+#	   @property(nonatomic, retain, readwrite) UITableView *tableView;
+#
+#	3: All property annotations are left aligned, then all decorators and types are considered
+#	   as being a single column, then all names are lined up
+#	   @property(nonatomic, retain)			   IBOutlet UIWindow *window;
+#	   @property(nonatomic, retain, readwrite) UITableView		 *tableView;
+#
+#	4: All property annotations are left aligned, then all decorators, types, and names are 
+#	   lined up in a columnar fashion
+#	   @property(nonatomic, retain)			   IBOutlet UIWindow	*window;
+#	   @property(nonatomic, retain, readwrite)			UITableView *tableView;
+#
+PROPERTIES_SHOULD_HAVE_N_COLUMNS = 1

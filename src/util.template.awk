@@ -61,6 +61,18 @@ function condenseWhitespace(s) {
   return s
 }
 
+function maxLengthOf(candidates) {
+    maxLength = 0
+    
+    len = length(candidates)
+
+    for (i = 1; i <= len; i++) {
+        maxLength = max(maxLength, length(candidates[i]));
+    }
+    
+    return maxLength
+}
+
 function max(m, n) {
   return m > n ? m : n
 }
