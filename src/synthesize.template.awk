@@ -46,6 +46,14 @@ function readSynthesizers(line, properties, aliases) {
 		readSynthesizers(line, properties, aliases)
 	} else {
 		formatSynthesizers(properties, aliases)
+		
+		# clean up
+		
+		delete properties
+		delete aliases
+		
+		# continue parsing the line that was just read
+		
 		parseLine(line)
 	}
 }

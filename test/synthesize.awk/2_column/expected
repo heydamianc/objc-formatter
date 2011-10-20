@@ -6,4 +6,3 @@
 @synthesize geographyObjectModel      = geographyObjectModel_;
 @synthesize geographyObjectContext    = geographyObjectContext_;
 @synthesize geographyStoreCoordinator = geographyStoreCoordinator_;
-
