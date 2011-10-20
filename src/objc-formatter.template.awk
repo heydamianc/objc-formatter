@@ -26,11 +26,15 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# template.awk
+# File:    objc-formatter.awk
+# Version: 0.1
+# Date:    2011-10-28
 # 
-# 2011-10-08
-# 
-# 
+# DESCRIPTION
+#   Formats Objective-C source code and header files.
+#
+# Usage:
+#   $ ./objc-formatter.awk [-v verbose=1] [-v configFile=<config file>] <source file>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

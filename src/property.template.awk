@@ -77,12 +77,15 @@ function readProperties(line, propertyDeclarations, decoratorLists, types, names
 function extractProperties(line, propertyDeclarations, decoratorLists, types, names, maxLengths) {
 	if (line !~ /^[ \t]*$/) {
 		gsub(";", "", line)
-
 		line = condenseWhitespace(line)
+		
+		propertyLength = index(line, ")")
+		
+		if (propertyLength == 0) {
+			propertyLength = 9 # length of "@property"
+		}
 
-		rightParensLoc = index(line, ")")
-
-		propertyDeclaration = substr(line, 0, rightParensLoc)
+		propertyDeclaration = substr(line, 0, propertyLength)
 		sub(/@property[ \t]*\(/, "@property(", propertyDeclaration)
 
 		i = length(propertyDeclarations) + 1
@@ -91,7 +94,7 @@ function extractProperties(line, propertyDeclarations, decoratorLists, types, na
 		maxLengths["propertyDeclaration"] = max(maxLengths["propertyDeclaration"], length(propertyDeclaration))
 		propertyDeclarations[i] = propertyDeclaration
 
-		variableDeclaration = trim(substr(line, rightParensLoc + 1, length(line)))
+		variableDeclaration = trim(substr(line, propertyLength + 1, length(line)))
 
 		# associate the star with the variable name's token
 		gsub(/[ \t]*\*[ \t]*/, " *", variableDeclaration)

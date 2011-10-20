@@ -1,0 +1,32 @@
+#import <CoreData/CoreData.h>
+#import "Blargh.h"
+#import "Blargh.h"
+
+@interface DoublePlusGoodClass : JustAnotherProtocol  <TTTableCellAware>
+{
+    float p;   // default -1, if != -1 then it is downloading
+    BOOL _fieldA;
+    BOOL _fieldB;
+}
+
+@property float progress;
+@property (nonatomic, retain) NSNumber * r;
+@property (nonatomic, retain) NSNumber * ur;
+@property (nonatomic, retain) NSDictionary * bs;
+@property (nonatomic, retain) NSString * t;
+@property (nonatomic, retain) NSString * n;
+@property (nonatomic, retain) User * c;
+@property (nonatomic, retain) NSSet* gas;
+@property (nonatomic, retain) NSSet* ss;
+@property (nonatomic, retain) Static * i;
+@property (nonatomic, retain) NSNumber * u;
+
+
+- (void)setSomething:(NSDictionary*)something;
+
+- (NSDictionary*)something;
+
+- (NSString*) str;
+- (NSNumber *)x;
+
+@end
