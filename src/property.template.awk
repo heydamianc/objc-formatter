@@ -70,6 +70,17 @@ function readProperties(line, propertyDeclarations, decoratorLists, types, names
 		readProperties(line, propertyDeclarations, decoratorLists, types, names, maxLengths)
 	} else {
 		formatProperties(propertyDeclarations, decoratorLists, types, names, maxLengths)
+		
+		# clean up
+		
+		delete propertyDeclarations
+		delete decoratorLists
+		delete types
+		delete names
+		delete maxLengths
+		
+		# continue parsing the line that was just read
+		
 		parseLine(line)
 	}
 }
