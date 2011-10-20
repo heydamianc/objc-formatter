@@ -30,8 +30,7 @@ function readConfig(configFile) {
 }
 
 function printConfig(config) {
-	print ".- Config -------------------------------------------------" \
-		"--------------------."
+	print "┏━ Config ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
 
 	maxEntry = 0
 
@@ -39,16 +38,15 @@ function printConfig(config) {
 		maxEntry = max(maxEntry, length(entry))
 	}
 
-	remaining = 73 - maxEntry
+	remaining = 72 - maxEntry
 
-	format = "| %-" maxEntry "s = %-" remaining "s |\n"
+	format = "┃ %-" maxEntry "s = %-" remaining "s ┃\n"
 
 	for (entry in config) {
 		printf(format, entry, config[entry])
 	}
 
-	print "'---------------------------------------------------------" \
-		"---------------------'"
+	print "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
 }
 
 function trim(s) {
