@@ -185,6 +185,16 @@ function formatProperties(propertyDeclarations, decoratorLists, types, names, ma
 
 			j++
 		}
+
+		delete propertyDeclarationsA
+		delete decoratorListsA
+		delete typesA
+		delete namesA
+
+		delete propertyDeclarationsB
+		delete decoratorListsB
+		delete typesB
+		delete namesB
 	}
 
 	if (config["PROPERTIES_SHOULD_HAVE_SPACE_AFTER_ANNOTATION"] == 1) {

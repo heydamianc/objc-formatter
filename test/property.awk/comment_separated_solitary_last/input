@@ -1,0 +1,51 @@
+//
+//  AClass.h
+//  AProject
+//
+//  Created by A Person on 10/28/10.
+//  Copyright (c) 2010 A Company. All rights reserved.
+//
+f
+#import <UIKit/UIKit.h>
+
+
+
+@interface AClass : UITableViewCell {
+    //View 1
+    UIView * a;
+    UIButton * b;
+    UIButton * c;
+    UIButton * d;
+    //View 2
+    UIView * e;
+    UIButton * f;
+    UIButton * g;
+    UIButton * h;
+    
+    //State
+    BOOL h;
+    
+}
+//View 1
+@property  (nonatomic, retain) IBOutlet UIView * a;
+@property  (nonatomic, retain) IBOutlet UIButton * b;
+@property  (nonatomic, retain) IBOutlet UIButton * c;
+@property  (nonatomic, retain) IBOutlet UIButton * d;
+//Underneath
+@property  (nonatomic, retain) IBOutlet UIView * e;
+@property  (nonatomic, retain) IBOutlet UIButton * f;
+@property  (nonatomic, retain) IBOutlet UIButton * g;
+@property  (nonatomic, retain) IBOutlet UIButton * h;
+
+
+//State. Never eat shredded wheat. Never eat shredded wheat. Never eat 
+//shredded wheat.  Never eat shredded wheat.  Never do that.
+@property (nonatomic) BOOL i;
+
+
+
+
+-(void) doSomethingDrastic:(BOOL)drastic;
+
+
+@end

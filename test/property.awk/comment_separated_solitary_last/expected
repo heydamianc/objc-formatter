@@ -1,0 +1,11 @@
+@property (nonatomic, retain) IBOutlet UIView   *a;
+@property (nonatomic, retain) IBOutlet UIButton *b;
+@property (nonatomic, retain) IBOutlet UIButton *c;
+@property (nonatomic, retain) IBOutlet UIButton *d;
+
+@property (nonatomic, retain) IBOutlet UIView   *e;
+@property (nonatomic, retain) IBOutlet UIButton *f;
+@property (nonatomic, retain) IBOutlet UIButton *g;
+@property (nonatomic, retain) IBOutlet UIButton *h;
+
+@property (nonatomic) BOOL i;

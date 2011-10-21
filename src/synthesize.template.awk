@@ -69,7 +69,7 @@ function extractSynthesizers(line, properties, aliases) {
 	for (i = 1; i <= len; i++) {
 
 		# The components of the directive are the LHS and RHS of the alias assignment, so for
-		# @syntehsize a = _a, component[1] would be 'a' and component[2] would be 'b'
+		# @synthesize a = _a, component[1] would be 'a' and component[2] would be 'b'
 
 		split(directives[i], components, "=")
 
