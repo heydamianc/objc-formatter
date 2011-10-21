@@ -1,3 +1,4 @@
 objc-formatter.awk
 build/*
 test/failures/*
+.DS_Store
