@@ -83,6 +83,8 @@ function extractSynthesizers(line, properties, aliases) {
 				aliases[j] = components[1]
 			}
 		}
+		
+		delete components
 	}
 }
 
