@@ -29,11 +29,12 @@ all: test
 test: generate
 	./test/run.sh test/synthesize.awk
 	./test/run.sh test/property.awk
+	./test/run.sh test/method.awk
 
 generate: objc-formatter.awk
 	chmod +x build/*.awk
 
-objc-formatter.awk: synthesize.awk property.awk
+objc-formatter.awk: method.awk synthesize.awk property.awk
 	./template.awk -v output=build/objc-formatter.awk -v include=build src/objc-formatter.template.awk
 
 property.awk: util.awk
@@ -41,6 +42,9 @@ property.awk: util.awk
 
 synthesize.awk: util.awk
 	./template.awk -v output=build/synthesize.awk -v include=build src/synthesize.template.awk
+
+method.awk: util.awk
+	./template.awk -v output=build/method.awk -v include=build src/method.template.awk
 
 util.awk: create-build-dir
 	./template.awk -v output=build/util.awk src/util.template.awk
