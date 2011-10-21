@@ -27,9 +27,7 @@
 all: test
 
 test: generate
-	./test/run.sh test/synthesize.awk
-	./test/run.sh test/property.awk
-	./test/run.sh test/method.awk
+	./test/run.sh build test/testcases
 
 generate: objc-formatter.awk
 	chmod +x build/*.awk

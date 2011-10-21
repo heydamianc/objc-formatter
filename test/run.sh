@@ -1,33 +1,70 @@
 #! /usr/bin/env sh
 
-if [ "${1}" == "" ]
-then
-    echo "Usage:" ${0} "test.dir"
-    exit 1
-fi
+function abspath {
+  case "${1}" in
+	[./]*)
+	echo "$(cd ${1%/*}; pwd)/${1##*/}"
+	;;
+	*)
+	echo "${PWD}/${1}"
+	;;
+  esac
+}
 
-testDir="${1}"
+function exitWithUsage {
+	echo "Usage: ${0} <script dir> <testCase dir>" 
+	exit 1
+}
 
-for testCase in $(ls ${testDir})
+function exitWithError {
+	echo "Error: ${1}" 
+	exit 1
+}
+
+[ "${1}" == "" ] && exitWithUsage
+[ "${2}" == "" ] && exitWithUsage
+[ ! -d "${1}" ] && exitWithError "${1} is not a directory"
+[ ! -d "${2}" ] && exitWithError "${2} is not a directory"
+
+scriptDir=${1}
+testCaseDir=${2}
+
+echo "Running Tests:"
+
+for sutDir in ${testCaseDir}/*
 do
-    sut="${testDir}/${testCase}/sut"
-    config="${testDir}/${testCase}/config"
-    input="${testDir}/${testCase}/input"
-    expected="${testDir}/${testCase}/expected"
+	sut="${scriptDir}/$(basename ${sutDir})"
+	echo "  ${sut}"
 
-    testCmd="${sut} -v configFile=${config} ${input} | diff -B ${expected} -"
-    result=$(eval "${testCmd}")
+	testScript=$(abspath "${scriptDir}/$(basename ${sutDir})")
 
-    if [[ ${result} == "" ]]
-    then
-        echo "  ✓ ${testCase}"
-    else
-        differences=$(echo ${result} | wc -l)
+	for testCase in ${sutDir}/*
+	do
+		config=$(abspath ${testCase}/config)
+		input=$(abspath ${testCase}/input)
+		expected=$(abspath ${testCase}/expected)
 
-        failureDir="test/failures/$(basename ${testDir})"
-        mkdir -p "${failureDir}"
-        
-        echo "  ✗ ${testCase} (see ${failureDir}/${testCase}.report)"
-        echo "${result}" > "${failureDir}/${testCase}.report"
-    fi
+		testCaseName="$(basename ${testCase})"
+
+		report="$(abspath $(dirname ${0}))/failures/$(basename ${sutDir})/${testCaseName}.report"
+		mkdir -p "$(dirname ${report})"
+
+		result=$(eval "${testScript} -v configFile=\"${config}\" \"${input}\" | diff -u -B --suppress-common-lines \"${expected}\" - 2> \"${report}\"")
+
+		if [[ ${result} == "" ]]
+		then
+			echo "    ✓ ${testCaseName}"
+			rm "${report}" &> /dev/null
+		else
+			echo "    ✗ ${testCaseName} (see ${report})"]
+			echo "${result}" > "${report}"
+			
+			echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+			echo "${result}"
+			echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+		fi
+	done
 done
+
+find "$(dirname ${0})/failures" -type d -empty -exec rmdir {} +
+find "$(dirname ${0})/failures" -type d -empty -exec rmdir {} +
