@@ -39,7 +39,7 @@ IFS=">"
 for sutDir in ${testCaseDir}/*
 do
 
-	echo ${sutDir}
+	echo "  ${sutDir}"
 	for testDir in ${sutDir}/*
 	do
 		testCaseName="$(basename ${testDir})"
