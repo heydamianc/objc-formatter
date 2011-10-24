@@ -72,6 +72,14 @@ BEGIN {
 	#
 	config["SYNTHESIZERS_SHOULD_BE_FORMATTED"] = 1
 
+	# Possible values: 0, 1
+	#
+	#   0: Do not reformat method declarations.
+	#
+	#   1: Reformat method declarations.
+	#
+	config["METHOD_DECLARATIONS_SHOULD_BE_FORMATTED"] = 1
+
 	# @include-fragment synthesize.awk default-config
 
 	# @include-fragment util.awk config
@@ -93,6 +101,8 @@ function parseLine(line) {
 		# @include-fragment property.awk parse
 	} else if (config["SYNTHESIZERS_SHOULD_BE_FORMATTED"] == 1 && line ~ /@synthesize/) {
 		# @include-fragment synthesize.awk parse
+	} else if (config["METHOD_DECLARATIONS_SHOULD_BE_FORMATTED"] == 1 && line ~ /^[ \t]*-[ \t]*(.+)[ \t]*(.+)/) {
+		#@include-fragment method.awk parse
 	} else {
 		line = trimTrailingWhitespace(line)
 		line = detab(line, tabReplacement)
@@ -102,4 +112,5 @@ function parseLine(line) {
 
 # @include-fragment property.awk functions
 # @include-fragment synthesize.awk functions
+# @include-fragment method.awk functions
 # @include-fragment util.awk functions
