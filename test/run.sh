@@ -31,26 +31,25 @@ testCaseDir=${2}
 
 echo "Running Tests:"
 
+# This is used to handle file paths with spaces in the name.
+# I'm not sure of how to do it any other way.
+
+IFS=">"
+
 for sutDir in ${testCaseDir}/*
 do
-	sut="${scriptDir}/$(basename ${sutDir})"
-	echo "  ${sut}"
 
-	testScript=$(abspath "${scriptDir}/$(basename ${sutDir})")
-
-	for testCase in ${sutDir}/*
+	echo ${sutDir}
+	for testDir in ${sutDir}/*
 	do
-		config=$(abspath ${testCase}/config)
-		input=$(abspath ${testCase}/input)
-		expected=$(abspath ${testCase}/expected)
-
-		testCaseName="$(basename ${testCase})"
-
+		testCaseName="$(basename ${testDir})"
+	
 		report="$(abspath $(dirname ${0}))/failures/$(basename ${sutDir})/${testCaseName}.report"
 		mkdir -p "$(dirname ${report})"
-
-		result=$(eval "${testScript} -v configFile=\"${config}\" \"${input}\" | diff -u -B --suppress-common-lines \"${expected}\" - 2> \"${report}\"")
-
+	
+		result=$(${scriptDir}/$(basename ${sutDir}) -v configFile="${testDir}/config" "${testDir}/input" | \
+			diff -u -B --suppress-common-lines "${testDir}/expected" - 2> "${report}")
+		
 		if [[ ${result} == "" ]]
 		then
 			echo "    ✓ ${testCaseName}"
@@ -58,7 +57,7 @@ do
 		else
 			echo "    ✗ ${testCaseName} (see ${report})"]
 			echo "${result}" > "${report}"
-			
+
 			echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 			echo "${result}"
 			echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -66,5 +65,7 @@ do
 	done
 done
 
-find "$(dirname ${0})/failures" -type d -empty -exec rmdir {} +
-find "$(dirname ${0})/failures" -type d -empty -exec rmdir {} +
+find "$(dirname ${0})/failures" -type d -empty -exec rmdir {} + &> /dev/null || true
+find "$(dirname ${0})/failures" -type d -empty -exec rmdir {} + &> /dev/null || true
+
+unset IFS
