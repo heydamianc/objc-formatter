@@ -13,7 +13,7 @@ BEGIN {
 }
 
 function parseLine(line) {
-	if (line ~ /^[ \t]*-[ \t]*(.+)[ \t]*(.+)/) {
+	if (line ~ /^[ \t]*-[ \t]*(.+)[ \t]*(.+);/) {
 		line = condenseWhitespace(line)
 		line = formatDash(line)
 		line = spaceStar(line)

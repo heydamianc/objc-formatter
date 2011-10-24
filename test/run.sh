@@ -29,7 +29,7 @@ function exitWithError {
 scriptDir=${1}
 testCaseDir=${2}
 
-echo "Running Tests:"
+echo "Running Tests in ${testCaseDir}"
 
 # This is used to handle file paths with spaces in the name.
 # I'm not sure of how to do it any other way.
@@ -38,8 +38,7 @@ IFS=">"
 
 for sutDir in ${testCaseDir}/*
 do
-
-	echo "  ${sutDir}"
+	echo "  $(basename ${sutDir})"
 	for testDir in ${sutDir}/*
 	do
 		testCaseName="$(basename ${testDir})"
